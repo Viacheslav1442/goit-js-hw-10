@@ -1,0 +1,14 @@
+ .timer {
+     display: flex;
+     gap: 20px;
+     margin-top: 20px;
+ }
+
+ .field {
+     text-align: center;
+ }
+
+ .value {
+     font-size: 2rem;
+     display: block;
+ }
