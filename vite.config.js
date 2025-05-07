@@ -9,15 +9,15 @@ export default defineConfig(({ command }) => {
     define: {
       [command === 'serve' ? 'global' : '_global']: {},
     },
-    root: 'src',
+    root: './', // якщо index.html знаходиться в корені проекту
     build: {
       sourcemap: true,
       rollupOptions: {
-        input: glob.sync('./src/*.html'),
+        input: './index.html', // вказуємо правильний шлях до index.html
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              return 'vendor';
+              return 'vendor'; // модули з node_modules окремо
             }
           },
           entryFileNames: chunkInfo => {
@@ -34,12 +34,12 @@ export default defineConfig(({ command }) => {
           },
         },
       },
-      outDir: '../dist',
+      outDir: './dist', // вихідна папка dist
       emptyOutDir: true,
     },
     plugins: [
       injectHTML(),
-      FullReload(['./src/**/**.html']),
+      FullReload(['./index.html']), // слухаємо зміни в index.html
       SortCss({
         sort: 'mobile-first',
       }),
