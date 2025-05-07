@@ -13,7 +13,7 @@ export default defineConfig(({ command }) => {
     build: {
       sourcemap: true,
       rollupOptions: {
-        input: './index.html', // вказуємо правильний шлях до index.html
+        input: glob.sync('./src/*.html'), // вказуємо правильний шлях до index.html
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
