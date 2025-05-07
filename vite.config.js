@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import { glob } from 'glob';
+import { globSync } from 'glob';
 import injectHTML from 'vite-plugin-html-inject';
 import FullReload from 'vite-plugin-full-reload';
 import SortCss from 'postcss-sort-media-queries';
@@ -9,15 +9,15 @@ export default defineConfig(({ command }) => {
     define: {
       [command === 'serve' ? 'global' : '_global']: {},
     },
-    root: './', // якщо index.html знаходиться в корені проекту
+    root: 'src', // Коренева папка проєкту тепер src
     build: {
       sourcemap: true,
       rollupOptions: {
-        input: glob.sync('./src/*.html'), // вказуємо правильний шлях до index.html
+        input: globSync('./src/*.html'), // правильний шлях до HTML-файлів
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              return 'vendor'; // модули з node_modules окремо
+              return 'vendor';
             }
           },
           entryFileNames: chunkInfo => {
@@ -34,12 +34,12 @@ export default defineConfig(({ command }) => {
           },
         },
       },
-      outDir: './dist', // вихідна папка dist
+      outDir: '../dist', // оскільки root — це src, вихідна папка повинна бути на рівень вище
       emptyOutDir: true,
     },
     plugins: [
       injectHTML(),
-      FullReload(['./index.html']), // слухаємо зміни в index.html
+      FullReload(['src/**/*.html']), // слухаємо всі HTML-файли у src
       SortCss({
         sort: 'mobile-first',
       }),
